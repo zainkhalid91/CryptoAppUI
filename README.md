@@ -1,6 +1,8 @@
 # CryptoAppUI
 ### A small Crypto app with neat UI. ### 
 
+#### Note: To login in or sign up just enter any dummy values. ####
+
 - Perform crypto transaction though this app using QR or token string.
 - User sign in/out and sign up option with email validation. 
 - Beautiful animations.
@@ -8,5 +10,6 @@
 - Fee calculation on each tranaction.
 - Transaction history list. 
 - Profile settings section.
+- UI Validations
 
 
