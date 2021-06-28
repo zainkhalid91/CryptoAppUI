@@ -3,7 +3,7 @@
 
 #### Note: To login in or sign up just enter any dummy values. ####
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/43206893/123633929-3e97ce80-d833-11eb-8a0b-5efdc91c3052.gif)
+<img src="https://user-images.githubusercontent.com/43206893/123633929-3e97ce80-d833-11eb-8a0b-5efdc91c3052.gif" width="35%"></img> 
 
 
 
