@@ -127,7 +127,7 @@ public class PinCodeActivity extends AppCompatActivity {
 
             dialog.findViewById(R.id.btn_enablePin_cancel_btn).setOnClickListener(v -> {
                 dialog.dismiss();
-                pincode_switch.setChecked(sessionManager.decodedToken().getPinEnabled());
+
             });
 
         }

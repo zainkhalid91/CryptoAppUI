@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_pinCode"
     android:layout_width="match_parent"
+    android:background="@color/screen_background"
     android:layout_height="match_parent">
 
     <ImageView
@@ -13,7 +15,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="17dp"
         android:background="@drawable/ic_back"
-        android:backgroundTint="@color/colorBlack"
+        android:backgroundTint="@color/colorWhite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +28,7 @@
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:text="@string/pincode"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorWhite"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="@color/lightgray"
+        android:background="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
@@ -73,7 +75,7 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:text="@string/enable_wallet_pincode"
-                android:textColor="@color/gray"
+                android:textColor="@color/colorWhite"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -114,7 +116,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp">
 
             <TextView
                 android:id="@+id/head_UpdatePin"
@@ -132,6 +136,7 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:text="@string/update_wallet_pincode"
+                android:textColor="@color/colorWhite"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -143,6 +148,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                android:tint="@color/colorWhite"
                 android:src="@drawable/ic_forward_arrow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -168,7 +174,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/dark_grey"
         android:fontFamily="@font/montserrat_bold"
         android:text="Forget Pincode"
         android:textAllCaps="false"
@@ -247,7 +253,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:lineColor="@color/gray"
+            app:lineColor="@color/colorWhite"
             app:lineWidth="2dp"
             app:viewType="rectangle" />
 

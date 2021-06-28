@@ -70,7 +70,7 @@
             android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="42dp"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/dark_grey"
             android:text="@string/set"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="42dp"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/dark_grey"
             android:text="@string/cancel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

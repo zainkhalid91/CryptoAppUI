@@ -1,11 +1,8 @@
 package com.wallet.yukoni.fragments;
 
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.snackbar.Snackbar;
 import com.wallet.yukoni.R;
 import com.wallet.yukoni.activities.ScanActivity;
-import com.wallet.yukoni.interfaces.ApiInterface;
-import com.wallet.yukoni.models.GetBalanceResponse;
-import com.wallet.yukoni.models.SendTokenRequest;
-import com.wallet.yukoni.models.SendTokenResponse;
-import com.wallet.yukoni.models.TransactionFee;
 import com.wallet.yukoni.utils.SessionManager;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,10 +32,8 @@ public class TokenTransferFragment extends Fragment {
     ImageView back_imgView, qr_Scan;
     ConstraintLayout fragmentcoinLayout;
     SessionManager sessionManager;
-    GetBalanceResponse getBalanceResponse;
     // Spinner coin_type_spinner;
     TextView fee_Text, total_token_editText;
-    TransactionFee transactionFees;
     ConstraintLayout fragment_token_tranfer_layout;
     View view;
     private EditText resipent_address_token, token_amount_editText;
@@ -77,7 +63,6 @@ public class TokenTransferFragment extends Fragment {
         fragment_token_tranfer_layout = view.findViewById(R.id.fragment_token_tranfer_layout);
         total_token_editText = view.findViewById(R.id.total_token_editText);
         sessionManager = new SessionManager(getContext());
-        getBalanceResponse = new GetBalanceResponse();
 
         resipent_address_token.setText(coin);
 
@@ -101,30 +86,9 @@ public class TokenTransferFragment extends Fragment {
                 token_amount_editText.setError("Please fill the required field");
                 return;
             }
-            if (sessionManager.decodedToken().getPinEnabled()) {
-                final Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.pincode_dialog_password);
-                dialog.show();
 
-
-                EditText password = dialog.findViewById(R.id.pin_password_editText);
-                password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                dialog.findViewById(R.id.btn_cancel_btn).setOnClickListener(a -> dialog.dismiss());
-
-                dialog.findViewById(R.id.btn_set_btn).setOnClickListener(b -> {
-                    String pass = sessionManager.decodedToken().getPinCode();
-                    if (password.getText().toString().equals(pass)) {
-                        SendTransaction();
-                        dialog.dismiss();
-                    } else {
-                        password.setError("Password does not match");
-                    }
-                });
-
-            } else {
                 SendTransaction();
-            }
+
         });
 
 
@@ -185,52 +149,22 @@ public class TokenTransferFragment extends Fragment {
             return false;
         });
 
-        ApiInterface.getInstance().transactionFee().enqueue(new Callback<TransactionFee>() {
-            @Override
-            public void onResponse(Call<TransactionFee> call, Response<TransactionFee> response) {
-                if (response.isSuccessful()) {
-                    TransactionFee transactionFee = response.body();
-                    //fee_Text.setText(transactionFee.getData().get(0).getNetworkfee().toString());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<TransactionFee> call, Throwable t) {
-
-            }
-        });
 
 
         return view;
     }
 
     void SendTransaction() {
-        ApiInterface.getInstance().sendToken(new SendTokenRequest(resipent_address_token.getText().toString(), Double.valueOf(token_amount_editText.getText().toString()), "G50")).enqueue(new Callback<SendTokenResponse>() {
-            @Override
-            public void onResponse(Call<SendTokenResponse> call, Response<SendTokenResponse> response) {
-                if (response.isSuccessful()) {
-                    SendTokenResponse tokenResponse = response.body();
-                    if (tokenResponse.getStatus()) {
-                        Snackbar.make(view.findViewById(R.id.fragment_token_tranfer_layout), tokenResponse.getMsg(), Snackbar.LENGTH_SHORT).show();
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-                        transaction.replace(R.id.fragment_token_tranfer_layout, new TransactionFragment());
-                        //transaction.addToBackStack(null);
-                        fragment_token_tranfer_layout.removeAllViews();
-                        transaction.commit();
 
-                    } else {
-                        Snackbar.make(view.findViewById(R.id.fragment_token_tranfer_layout), tokenResponse.getMsg(), Snackbar.LENGTH_SHORT).show();
-                    }
+        Snackbar.make(view.findViewById(R.id.fragment_token_tranfer_layout), "Success", Snackbar.LENGTH_SHORT).show();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        transaction.replace(R.id.fragment_token_tranfer_layout, new TransactionFragment());
+        //transaction.addToBackStack(null);
+        fragment_token_tranfer_layout.removeAllViews();
+        transaction.commit();
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SendTokenResponse> call, Throwable t) {
-
-            }
-        });
 
     }
 

@@ -24,8 +24,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.snackbar.Snackbar;
 import com.wallet.yukoni.R;
 import com.wallet.yukoni.activities.ScanActivity;
-import com.wallet.yukoni.models.GetBalanceResponse;
-import com.wallet.yukoni.models.TransactionFee;
 import com.wallet.yukoni.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -40,10 +38,8 @@ public class CoinTransferFragment extends Fragment {
     ImageView back_imgView, qr_Scan;
     ConstraintLayout fragmentcoinLayout, fragment_coin_tranfer_layoutt;
     SessionManager sessionManager;
-    GetBalanceResponse getBalanceResponse;
     Spinner coin_type_spinner;
     TextView fee_EditText, total_editText, eth_remaining_textView;
-    TransactionFee transactionFees;
     View view;
     ConstraintLayout fragment_coin_tranfer_layout;
     private EditText resipent_address_token, amount_editText;
@@ -75,7 +71,6 @@ public class CoinTransferFragment extends Fragment {
         fragment_coin_tranfer_layout = view.findViewById(R.id.fragment_coin_tranfer_layoutt);
         total_editText = view.findViewById(R.id.total_editText);
         sessionManager = new SessionManager(getContext());
-        getBalanceResponse = new GetBalanceResponse();
 
         resipent_address_token.setText(coin);
 

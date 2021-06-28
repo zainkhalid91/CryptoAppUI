@@ -23,18 +23,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wallet.yukoni.R;
-import com.wallet.yukoni.interfaces.ApiInterface;
-import com.wallet.yukoni.models.BuyTokenRequest;
-import com.wallet.yukoni.models.BuyTokenResponse;
-import com.wallet.yukoni.models.ConvertCurrency;
-import com.wallet.yukoni.models.Values;
 import com.wallet.yukoni.utils.Utils;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +35,6 @@ public class BuyTokenFragment extends Fragment {
     boolean opened;
     ImageView expandCollapseImageView;
     private ConstraintLayout fragmentcoin, constraintLayoutCalculator;
-    private ConvertCurrency convertCurrency;
     private Spinner spinner_converter;
     private float storedValue = 0;
     private Button btn_convert, btn_rec_transaction_token;
@@ -78,19 +68,7 @@ public class BuyTokenFragment extends Fragment {
         ConstraintLayout calculatorView = view.findViewById(R.id.calculatorView);
         convertedAmountEditText.setEnabled(false);
         view.findViewById(R.id.token_amount_editText).hasFocus();
-        ApiInterface.getInstance().currencyConverter().enqueue(new Callback<ConvertCurrency>() {
-            @Override
-            public void onResponse(Call<ConvertCurrency> call, Response<ConvertCurrency> response) {
-                if (response.isSuccessful()) {
-                    convertCurrency = response.body();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ConvertCurrency> call, Throwable t) {
-
-            }
-        });
         ArrayList<String> tmp = new ArrayList<>();
         //tmp.add("Select");
         tmp.add("ETH");
@@ -115,16 +93,13 @@ public class BuyTokenFragment extends Fragment {
                 try {
 
 
-                    Values values = convertCurrency.getData();
                     parent.getSelectedItem().equals("ETH");
                     if (parent.getSelectedItem().equals("ETH")) {
-                        storedValue = values.getTokenPerEthereum();
                         amountToConvert_EditText.getText().clear();
                         convertedAmountEditText.getText().clear();
                     } else {
                         amountToConvert_EditText.getText().clear();
                         convertedAmountEditText.getText().clear();
-                        storedValue = values.getTokenPerKrW();
                     }
                 } catch (Exception ignored) {
 
@@ -183,37 +158,18 @@ public class BuyTokenFragment extends Fragment {
                 token_amount_editText.setError("Please set amount first");
                 return;
             }
-            ApiInterface.getInstance().buyToken(new BuyTokenRequest(Float.valueOf(token_amount_editText.getText().toString()), "0x7cF40f247cbB09f87eB0318cC414e5Fe2beCb84f", symbol_TextView.getText().toString()))
-                    .enqueue(new Callback<BuyTokenResponse>() {
-                        @Override
-                        public void onResponse(Call<BuyTokenResponse> call, Response<BuyTokenResponse> response) {
 
-                            if (response.isSuccessful()) {
-                                BuyTokenResponse buyTokenResponse = response.body();
-                                if (buyTokenResponse.getStatus()) {
-                                    Snackbar.make(view.findViewById(R.id.fragment_coin_tranfer_layout), buyTokenResponse.getMsg(), Snackbar.LENGTH_LONG).show();
-                                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                    transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-                                    transaction.replace(R.id.fragment_coin_tranfer_layout, new TransactionFragment());
-                                    //transaction.addToBackStack(null);
-                                    fragmentcoin.removeAllViews();
-                                    transaction.commit();
+            Snackbar.make(view.findViewById(R.id.fragment_coin_tranfer_layout), "Successful", Snackbar.LENGTH_LONG).show();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            transaction.replace(R.id.fragment_coin_tranfer_layout, new TransactionFragment());
+            //transaction.addToBackStack(null);
+            fragmentcoin.removeAllViews();
+            transaction.commit();
 
-                                } else {
-                                    Snackbar.make(view.findViewById(R.id.fragment_coin_tranfer_layout), buyTokenResponse.getMsg(), Snackbar.LENGTH_LONG).show();
-                                }
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<BuyTokenResponse> call, Throwable t) {
-
-                        }
-                    });
 
         });
+
 
         constraintLayoutCalculator.setOnClickListener(v -> {
             if (!opened) {
@@ -235,11 +191,7 @@ public class BuyTokenFragment extends Fragment {
             try {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String a = token_amount_editText.getText().toString();
-                    Double fl = Double.valueOf(a) * convertCurrency.getEthToKrw();
-                    total_TextView.setText(fl.toString());
 
-                    Float flt = Float.valueOf(a) * convertCurrency.getData().getTokenPerEthereum();
-                    total_TextView_SFCC.setText(flt.toString());
                     return true;
                 }
             } catch (Exception ignore) {

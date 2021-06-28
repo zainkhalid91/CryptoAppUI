@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.ChangePassword"></activity>
+        <activity android:name=".activities.ChangePassword" />
         <activity android:name=".activities.UserProfileActivity" />
         <activity android:name=".activities.PinCodeActivity" />
         <activity android:name=".activities.ScanActivity" />

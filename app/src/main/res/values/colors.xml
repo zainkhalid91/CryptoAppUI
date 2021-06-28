@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#241746</color>
+    <color name="colorPrimary">#606060</color>
+    <color name="colorPrimaryDark">#6E6E6E</color>
     <color name="colorAccent">#ffff</color>
 
     <color name="colorWhite">#ffffff</color>
@@ -10,11 +10,11 @@
     <color name="colorButton">#FE595F</color>
     <color name="ButtonShadow">#7ffe595f</color>
     <color name="shadow">#66000000</color>
-    <color name="screen_background">#322455</color>
-    <color name="green">#23966E</color>
-    <color name="blue">#32BEAF</color>
+    <color name="screen_background">#000000</color>
+    <color name="light_grey">#656565</color>
+    <color name="dark_grey">#2C2E2E</color>
     <color name="lightgray">#E0E0E0</color>
-    <color name="card_background">#372C52</color>
+    <color name="card_background">#2C2E2E</color>
 
 
     <!--/TextInput Custom Color-->

@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.wallet.yukoni.R;
-import com.wallet.yukoni.models.TokenModel;
 import com.wallet.yukoni.utils.QRCodeGenerator;
 import com.wallet.yukoni.utils.SessionManager;
 
@@ -46,7 +45,6 @@ public class ReceiveFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_receive, container, false);
 
         sessionManager = new SessionManager(getContext());
-        TokenModel tokenModel = sessionManager.decodedToken();
 
         backImageView = view.findViewById(R.id.backImageView);
         constraintLayout_recieveFragment = view.findViewById(R.id.constraintLayout_recieveFragment);

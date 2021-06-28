@@ -11,15 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wallet.yukoni.R;
-import com.wallet.yukoni.models.TransactionDetail;
-
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.MyViewHolder> {
     Context context;
-    ArrayList<TransactionDetail> transactionDetails;
 
 /*    public TransactionAdapter(ArrayList<TransactionDetail> list, Context context) {
         this.transactionDetails = list;

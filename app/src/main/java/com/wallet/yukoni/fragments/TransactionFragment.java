@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.wallet.yukoni.R;
 import com.wallet.yukoni.adapters.TransactionAdapter;
-import com.wallet.yukoni.models.UserTransactions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,7 +20,6 @@ import com.wallet.yukoni.models.UserTransactions;
 public class TransactionFragment extends Fragment {
     private static TransactionFragment transactionFragment;
     private TransactionAdapter transactionAdapter;
-    private UserTransactions userTransactions;
     private RecyclerView transaction_recylerView;
 
     public static TransactionFragment getInstance() {

@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
 import android.util.Log
-import com.google.gson.Gson
-import com.wallet.yukoni.models.TokenModel
 import java.io.UnsupportedEncodingException
 import java.nio.charset.StandardCharsets
 
@@ -55,17 +53,7 @@ class SessionManager(_context: Context) {
         editor = pref.edit()
     }
 
-    fun decodedToken(): TokenModel? {
-        return try {
-            val decode = decoded(token)
-            val gson = Gson()
-            gson.fromJson(decode, TokenModel::class.java)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
 
-    }
 
     fun setLoggined(isLoggedIn: Boolean) {
         editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn)
