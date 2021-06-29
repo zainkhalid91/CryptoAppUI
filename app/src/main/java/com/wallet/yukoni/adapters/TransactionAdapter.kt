@@ -1,66 +1,49 @@
-package com.wallet.yukoni.adapters;
+package com.wallet.yukoni.adapters
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.wallet.yukoni.R
+import de.hdodenhof.circleimageview.CircleImageView
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.MyViewHolder?>() {
+    var context: Context? = null
 
-import com.wallet.yukoni.R;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.MyViewHolder> {
-    Context context;
-
-/*    public TransactionAdapter(ArrayList<TransactionDetail> list, Context context) {
+    /*    public TransactionAdapter(ArrayList<TransactionDetail> list, Context context) {
         this.transactionDetails = list;
         this.context = context;
     }*/
-
-    @NonNull
-    @Override
-    public TransactionAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_card, parent, false);
-
-        return new TransactionAdapter.MyViewHolder(view);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.transaction_card, parent, false)
+        return MyViewHolder(view)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull TransactionAdapter.MyViewHolder holder, int position) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         try {
 
 //your code here
-        } catch (Exception ignored) {
-            Log.d("", "onBindViewHolder: " + ignored);
+        } catch (ignored: Exception) {
+            Log.d("", "onBindViewHolder: $ignored")
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return 3;
-
+    override fun getItemCount(): Int {
+        return 3
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView coin_name, sent_to_TextView, amount_textView, usd_TextView, txtCategory, date_textView, time_textView;
-        CircleImageView coin_Img;
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var coin_name: TextView? = itemView.findViewById(R.id.coin_name)
+        var sent_to_TextView: TextView? = itemView.findViewById(R.id.sent_to_TextView)
+        var amount_textView: TextView? = itemView.findViewById(R.id.amout_textView)
+        private var usd_TextView: TextView? = itemView.findViewById(R.id.usd_TextView)
+        private var txtCategory: TextView? = itemView.findViewById(R.id.txtCategory)
+        private var date_textView: TextView? = itemView.findViewById(R.id.date_textView)
+        private var time_textView: TextView? = itemView.findViewById(R.id.time_textView)
+        var coin_Img: CircleImageView? = itemView.findViewById(R.id.coin_Img)
 
-        MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            coin_name = itemView.findViewById(R.id.coin_name);
-            sent_to_TextView = itemView.findViewById(R.id.sent_to_TextView);
-            amount_textView = itemView.findViewById(R.id.amout_textView);
-            coin_Img = itemView.findViewById(R.id.coin_Img);
-            usd_TextView = itemView.findViewById(R.id.usd_TextView);
-            txtCategory = itemView.findViewById(R.id.txtCategory);
-            date_textView = itemView.findViewById(R.id.date_textView);
-            time_textView = itemView.findViewById(R.id.time_textView);
-        }
     }
 }

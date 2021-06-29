@@ -1,6 +1,5 @@
-package com.wallet.yukoni.utils;
+package com.wallet.yukoni.utils
 
-public class SingletonClass {
-    public static String gettoken;
-
+object SingletonClass {
+    var gettoken: String? = null
 }

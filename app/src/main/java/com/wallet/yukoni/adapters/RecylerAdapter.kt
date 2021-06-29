@@ -1,37 +1,22 @@
-package com.wallet.yukoni.adapters;
+package com.wallet.yukoni.adapters
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.wallet.yukoni.R
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.wallet.yukoni.R;
-
-public class RecylerAdapter extends RecyclerView.Adapter<RecylerAdapter.MyViewHolder> {
-    @NonNull
-    @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.token_card, parent, false);
-
-        return new MyViewHolder(itemView);
+class RecylerAdapter : RecyclerView.Adapter<RecylerAdapter.MyViewHolder?>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.token_card, parent, false)
+        return MyViewHolder(itemView)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {}
+    override fun getItemCount(): Int {
+        return 0
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

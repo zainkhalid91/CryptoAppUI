@@ -1,206 +1,155 @@
-package com.wallet.yukoni.fragments;
+package com.wallet.yukoni.fragments
 
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.wallet.yukoni.R;
-import com.wallet.yukoni.utils.Utils;
-
-import java.util.ArrayList;
+import android.graphics.Color
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.TextView.OnEditorActionListener
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.wallet.yukoni.R
+import com.wallet.yukoni.utils.*
+import java.util.*
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple [Fragment] subclass.
  */
-public class BuyTokenFragment extends Fragment {
-
-    boolean opened;
-    ImageView expandCollapseImageView;
-    private ConstraintLayout fragmentcoin, constraintLayoutCalculator;
-    private Spinner spinner_converter;
-    private float storedValue = 0;
-    private Button btn_convert, btn_rec_transaction_token;
-    private EditText amountToConvert_EditText, convertedAmountEditText, resipent_address, token_amount_editText;
-    private TextView symbol_TextView, feeTextView, total_TextView, total_TextView_SFCC;
-
-    public BuyTokenFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+class BuyTokenFragment : Fragment() {
+    var opened = false
+    private lateinit var expandCollapseImageView: ImageView
+    private lateinit var fragmentcoin: ConstraintLayout
+    private lateinit var constraintLayoutCalculator: ConstraintLayout
+    private lateinit var spinnerConverter: Spinner
+    private var storedValue = 0f
+    private lateinit var btnConvert: Button
+    private lateinit var btnRecTransactionToken: Button
+    private lateinit var amountToConvert_EditText: EditText
+    private lateinit var convertedAmountEditText: EditText
+    private lateinit var resipent_address: EditText
+    private lateinit var token_amount_editText: EditText
+    private lateinit var symbol_TextView: TextView
+    private lateinit var feeTextView: TextView
+    private lateinit var total_TextView: TextView
+    private lateinit var total_TextView_SFCC: TextView
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_buy_token, container, false);
-        ImageView back_imageView = view.findViewById(R.id.back_imgView);
-        fragmentcoin = view.findViewById(R.id.fragment_coin_tranfer_layout);
-        resipent_address = view.findViewById(R.id.resipent_address);
-        spinner_converter = view.findViewById(R.id.spinner_converter);
-        total_TextView = view.findViewById(R.id.total_TextView);
-        symbol_TextView = view.findViewById(R.id.symbol_TextView);
-        btn_convert = view.findViewById(R.id.btn_convert);
-        token_amount_editText = view.findViewById(R.id.token_amount_editText);
-        amountToConvert_EditText = view.findViewById(R.id.amountToConvert_EditText);
-        constraintLayoutCalculator = view.findViewById(R.id.constraintLayoutCalculator);
-        total_TextView_SFCC = view.findViewById(R.id.total_TextView_SFCC);
-        convertedAmountEditText = view.findViewById(R.id.convertedAmountEditText);
-        expandCollapseImageView = view.findViewById(R.id.expandCollapseImageView);
-        btn_rec_transaction_token = view.findViewById(R.id.btn_rec_transaction_token);
-        ConstraintLayout calculatorView = view.findViewById(R.id.calculatorView);
-        convertedAmountEditText.setEnabled(false);
-        view.findViewById(R.id.token_amount_editText).hasFocus();
-
-        ArrayList<String> tmp = new ArrayList<>();
+        val view = inflater.inflate(R.layout.fragment_buy_token, container, false)
+        val back_imageView = view.findViewById<ImageView?>(R.id.back_imgView)
+        fragmentcoin = view.findViewById(R.id.fragment_coin_tranfer_layout)
+        resipent_address = view.findViewById(R.id.resipent_address)
+        spinnerConverter = view.findViewById(R.id.spinner_converter)
+        total_TextView = view.findViewById(R.id.total_TextView)
+        symbol_TextView = view.findViewById(R.id.symbol_TextView)
+        btnConvert = view.findViewById(R.id.btn_convert)
+        token_amount_editText = view.findViewById(R.id.token_amount_editText)
+        amountToConvert_EditText = view.findViewById(R.id.amountToConvert_EditText)
+        constraintLayoutCalculator = view.findViewById(R.id.constraintLayoutCalculator)
+        total_TextView_SFCC = view.findViewById(R.id.total_TextView_SFCC)
+        convertedAmountEditText = view.findViewById(R.id.convertedAmountEditText)
+        expandCollapseImageView = view.findViewById(R.id.expandCollapseImageView)
+        btnRecTransactionToken = view.findViewById(R.id.btn_rec_transaction_token)
+        val calculatorView: ConstraintLayout = view.findViewById(R.id.calculatorView)
+        convertedAmountEditText.isEnabled = false
+        view.findViewById<View?>(R.id.token_amount_editText).hasFocus()
+        val tmp = ArrayList<String?>()
         //tmp.add("Select");
-        tmp.add("ETH");
-        tmp.add("KRW");
-        spinner_converter.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, tmp));
-        feeTextView = view.findViewById(R.id.feeTextView);
-        feeTextView.setText(Utils.fee);
-
-        back_imageView.setOnClickListener(v -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            transaction.replace(R.id.fragment_coin, new CoinFragment());
+        tmp.add("ETH")
+        tmp.add("KRW")
+        spinnerConverter.adapter = ArrayAdapter(this.requireContext(), android.R.layout.simple_spinner_dropdown_item, tmp)
+        feeTextView = view.findViewById(R.id.feeTextView)
+        feeTextView.text = Utils.fee
+        back_imageView.setOnClickListener { v: View? ->
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+            transaction.replace(R.id.fragment_coin, CoinFragment())
             //transaction.addToBackStack(null);
-            fragmentcoin.removeAllViews();
-            transaction.commit();
-        });
-
-
-        spinner_converter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            fragmentcoin.removeAllViews()
+            transaction.commit()
+        }
+        spinnerConverter.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 try {
-
-
-                    parent.getSelectedItem().equals("ETH");
-                    if (parent.getSelectedItem().equals("ETH")) {
-                        amountToConvert_EditText.getText().clear();
-                        convertedAmountEditText.getText().clear();
+                    if (parent?.selectedItem == "ETH") {
+                        amountToConvert_EditText.text.clear()
+                        convertedAmountEditText.text.clear()
                     } else {
-                        amountToConvert_EditText.getText().clear();
-                        convertedAmountEditText.getText().clear();
+                        amountToConvert_EditText.text.clear()
+                        convertedAmountEditText.text.clear()
                     }
-                } catch (Exception ignored) {
-
+                } catch (ignored: Exception) {
                 }
-
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        amountToConvert_EditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        amountToConvert_EditText.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
                 // TODO Auto-generated method stub
             }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().equals(".")) {
-                    if (s.length() > 0) {
-                        float i = Float.parseFloat(s.toString());
-                        float val = storedValue * i;
-                        convertedAmountEditText.setText(String.valueOf(val));
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString() != ".") {
+                    if (s?.length!! > 0) {
+                        val i = s.toString().toFloat()
+                        val `val` = storedValue * i
+                        convertedAmountEditText.setText(`val`.toString())
                     }
-                    if (amountToConvert_EditText.getText().toString().isEmpty()) {
-                        convertedAmountEditText.setText("0");
+                    if (amountToConvert_EditText.text.toString().isEmpty()) {
+                        convertedAmountEditText.setText("0")
                     }
                 }
             }
-        });
-
-        btn_convert.setOnClickListener(v -> {
-            if (amountToConvert_EditText.getText().toString().isEmpty()) {
-                amountToConvert_EditText.setError("Please enter amount first");
-                return;
+        })
+        btnConvert.setOnClickListener(View.OnClickListener { v: View? ->
+            if (amountToConvert_EditText.text.toString().isEmpty()) {
+                amountToConvert_EditText.error = "Please enter amount first"
+                return@OnClickListener
             }
-
-            float i = Float.parseFloat(amountToConvert_EditText.getText().toString());
-            storedValue = storedValue * i;
-            convertedAmountEditText.setText(String.valueOf(storedValue));
-        });
-
-
-        btn_rec_transaction_token.setOnClickListener(v -> {
-            if (token_amount_editText.getText().toString().isEmpty()) {
-                token_amount_editText.setError("Please set amount first");
-                return;
+            val i = amountToConvert_EditText.text.toString().toFloat()
+            storedValue = storedValue * i
+            convertedAmountEditText.setText(storedValue.toString())
+        })
+        btnRecTransactionToken.setOnClickListener(View.OnClickListener { v: View? ->
+            if (token_amount_editText.text.toString().isEmpty()) {
+                token_amount_editText.error = "Please set amount first"
+                return@OnClickListener
             }
-
-            Snackbar.make(view.findViewById(R.id.fragment_coin_tranfer_layout), "Successful", Snackbar.LENGTH_LONG).show();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            transaction.replace(R.id.fragment_coin_tranfer_layout, new TransactionFragment());
+            Snackbar.make(view.findViewById(R.id.fragment_coin_tranfer_layout), "Successful", Snackbar.LENGTH_LONG).show()
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+            transaction.replace(R.id.fragment_coin_tranfer_layout, TransactionFragment())
             //transaction.addToBackStack(null);
-            fragmentcoin.removeAllViews();
-            transaction.commit();
-
-
-        });
-
-
-        constraintLayoutCalculator.setOnClickListener(v -> {
+            fragmentcoin.removeAllViews()
+            transaction.commit()
+        })
+        constraintLayoutCalculator.setOnClickListener {
             if (!opened) {
-                calculatorView.setVisibility(View.VISIBLE);
-                spinner_converter.getViewTreeObserver().addOnGlobalLayoutListener(() -> ((TextView) spinner_converter.getSelectedView()).setTextColor(Color.WHITE));
-                expandCollapseImageView.setImageResource(R.drawable.ic_collapse_black_24dp);
-
-
+                calculatorView.visibility = View.VISIBLE
+                spinnerConverter.viewTreeObserver.addOnGlobalLayoutListener { (spinnerConverter.selectedView as TextView).setTextColor(Color.WHITE) }
+                expandCollapseImageView.setImageResource(R.drawable.ic_collapse_black_24dp)
             } else {
-                calculatorView.setVisibility(View.GONE);
-                expandCollapseImageView.setImageResource(R.drawable.ic_expand_black_24dp);
-
+                calculatorView.visibility = View.GONE
+                expandCollapseImageView.setImageResource(R.drawable.ic_expand_black_24dp)
             }
-            opened = !opened;
-
-        });
-
-        token_amount_editText.setOnEditorActionListener((v, actionId, event) -> {
+            opened = !opened
+        }
+        token_amount_editText.setOnEditorActionListener(OnEditorActionListener { v: TextView?, actionId: Int, _: KeyEvent? ->
             try {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    String a = token_amount_editText.getText().toString();
-
-                    return true;
+                    val a = token_amount_editText.text.toString()
+                    return@OnEditorActionListener true
                 }
-            } catch (Exception ignore) {
+            } catch (ignore: Exception) {
             }
-            return false;
-        });
-
-
-        return view;
+            false
+        })
+        return view
     }
-
 }

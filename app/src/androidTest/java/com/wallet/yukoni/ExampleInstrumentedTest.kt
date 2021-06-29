@@ -1,27 +1,22 @@
-package com.wallet.yukoni;
+package com.wallet.yukoni
 
-import android.content.Context;
-
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.assertEquals;
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * @see [Testing documentation](http://d.android.com/tools/testing)
  */
-@RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+@RunWith(AndroidJUnit4::class)
+class ExampleInstrumentedTest {
     @Test
-    public void useAppContext() {
+    fun useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
-        assertEquals("com.wallet.yukoni", appContext.getPackageName());
+        val appContext = InstrumentationRegistry.getTargetContext()
+        Assert.assertEquals("com.wallet.yukoni", appContext.packageName)
     }
 }

@@ -1,96 +1,70 @@
-package com.wallet.yukoni.fragments;
+package com.wallet.yukoni.fragments
 
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.wallet.yukoni.R;
-import com.wallet.yukoni.activities.ScanActivity;
-import com.wallet.yukoni.utils.SessionManager;
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.*
+import android.widget.TextView.OnEditorActionListener
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.wallet.yukoni.R
+import com.wallet.yukoni.activities.ScanActivity
+import com.wallet.yukoni.utils.*
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple [Fragment] subclass.
  */
-public class TokenTransferFragment extends Fragment {
+class TokenTransferFragment : Fragment() {
+    private lateinit var coin: String
+    private lateinit var back_imgView: ImageView
+    private lateinit var qr_Scan: ImageView
+    private lateinit var fragmentcoinLayout: ConstraintLayout
+    private lateinit var sessionManager: SessionManager
 
-    private static TokenTransferFragment tokenTransferFragment;
-    public String coin;
-    ImageView back_imgView, qr_Scan;
-    ConstraintLayout fragmentcoinLayout;
-    SessionManager sessionManager;
     // Spinner coin_type_spinner;
-    TextView fee_Text, total_token_editText;
-    ConstraintLayout fragment_token_tranfer_layout;
-    View view;
-    private EditText resipent_address_token, token_amount_editText;
-    private Button btn_send_token;
-
-    public static TokenTransferFragment getInstance() {
-        if (tokenTransferFragment == null) {
-            tokenTransferFragment = new TokenTransferFragment();
-        }
-        return tokenTransferFragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    private lateinit var fee_Text: TextView
+    private lateinit var total_token_editText: TextView
+    private lateinit var fragment_token_tranfer_layout: ConstraintLayout
+    private lateinit var resipent_address_token: EditText
+    private lateinit var token_amount_editText: EditText
+    private lateinit var btn_send_token: Button
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_token_transfer, container, false);
-
-        back_imgView = view.findViewById(R.id.back_imgView);
-        fragmentcoinLayout = getActivity().findViewById(R.id.activity_main);
-        qr_Scan = view.findViewById(R.id.qr_Scan);
+        val view = inflater.inflate(R.layout.fragment_token_transfer, container, false)
+        back_imgView = view.findViewById(R.id.back_imgView)
+        fragmentcoinLayout = view.findViewById(R.id.activity_main)
+        qr_Scan = view.findViewById(R.id.qr_Scan)
         // coin_type_spinner = view.findViewById(R.id.coin_type_spinner);
-        resipent_address_token = view.findViewById(R.id.resipent_address_token);
-        token_amount_editText = view.findViewById(R.id.token_amount_editText);
-        btn_send_token = view.findViewById(R.id.btn_send_token);
-        fee_Text = view.findViewById(R.id.fee_EditText);
-        fragment_token_tranfer_layout = view.findViewById(R.id.fragment_token_tranfer_layout);
-        total_token_editText = view.findViewById(R.id.total_token_editText);
-        sessionManager = new SessionManager(getContext());
-
-        resipent_address_token.setText(coin);
-
-        back_imgView.setOnClickListener(v -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            transaction.replace(R.id.fragment_token_tranfer_layout, new CoinFragment());
-//          transaction.addToBackStack(null);
-            fragment_token_tranfer_layout.removeAllViews();
-            transaction.commit();
-        });
-
-        qr_Scan.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ScanActivity.class);
-            startActivityForResult(intent, 12);
-        });
-
-        btn_send_token.setOnClickListener(v -> {
-            if (resipent_address_token.getText().toString().isEmpty() || token_amount_editText.getText().toString().isEmpty()) {
-                resipent_address_token.setError("Please fill required field");
-                token_amount_editText.setError("Please fill the required field");
-                return;
+        resipent_address_token = view.findViewById(R.id.resipent_address_token)
+        token_amount_editText = view.findViewById(R.id.token_amount_editText)
+        btn_send_token = view.findViewById(R.id.btn_send_token)
+        fee_Text = view.findViewById(R.id.fee_EditText)
+        fragment_token_tranfer_layout = view.findViewById(R.id.fragment_token_tranfer_layout)
+        total_token_editText = view.findViewById(R.id.total_token_editText)
+        sessionManager = SessionManager(this.requireContext())
+        resipent_address_token.setText(coin)
+        back_imgView.setOnClickListener(View.OnClickListener { v: View? ->
+            val transaction = childFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+            transaction.replace(R.id.fragment_token_tranfer_layout, CoinFragment())
+            //          transaction.addToBackStack(null);
+            fragment_token_tranfer_layout.removeAllViews()
+            transaction.commit()
+        })
+        qr_Scan.setOnClickListener(View.OnClickListener { v: View? ->
+            val intent = Intent(activity, ScanActivity::class.java)
+            startActivityForResult(intent, 12)
+        })
+        btn_send_token.setOnClickListener(View.OnClickListener { v: View? ->
+            if (resipent_address_token.text.toString().isEmpty() || token_amount_editText.text.toString().isEmpty()) {
+                resipent_address_token.error = "Please fill required field"
+                token_amount_editText.error = "Please fill the required field"
+                return@OnClickListener
             }
-
-                SendTransaction();
-
-        });
-
+            sendTransaction()
+        })
 
 
         /*ApiInterface.getInstance().transactionFee().enqueue(new Callback<TransactionFee>() {
@@ -138,50 +112,45 @@ public class TokenTransferFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });*/
-
-
-        token_amount_editText.setOnEditorActionListener((v, actionId, event) -> {
+        });*/token_amount_editText.setOnEditorActionListener(OnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                total_token_editText.setText(token_amount_editText.getText().toString());
-                return true;
+                total_token_editText.text = token_amount_editText.text.toString()
+                return@OnEditorActionListener true
             }
-            return false;
-        });
-
-
-
-
-        return view;
+            false
+        })
+        return view
     }
 
-    void SendTransaction() {
-
-        Snackbar.make(view.findViewById(R.id.fragment_token_tranfer_layout), "Success", Snackbar.LENGTH_SHORT).show();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        transaction.replace(R.id.fragment_token_tranfer_layout, new TransactionFragment());
+    fun sendTransaction() {
+        view?.let { Snackbar.make(it.findViewById(R.id.fragment_token_tranfer_layout), "Success", Snackbar.LENGTH_SHORT).show() }
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+        transaction.replace(R.id.fragment_token_tranfer_layout, TransactionFragment())
         //transaction.addToBackStack(null);
-        fragment_token_tranfer_layout.removeAllViews();
-        transaction.commit();
-
-
+        fragment_token_tranfer_layout.removeAllViews()
+        transaction.commit()
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 12 && data != null) {
-
-            String result = data.getStringExtra("result");
+            val result = data.getStringExtra("result")
             if (result != null) {
-                resipent_address_token.setText(result);
+                resipent_address_token.setText(result)
             } else {
-                resipent_address_token.setText(coin);
+                resipent_address_token.setText(coin)
             }
         }
     }
 
-
+    companion object {
+        private var tokenTransferFragment: TokenTransferFragment? = null
+        fun getInstance(): TokenTransferFragment? {
+            if (tokenTransferFragment == null) {
+                tokenTransferFragment = TokenTransferFragment()
+            }
+            return tokenTransferFragment
+        }
+    }
 }

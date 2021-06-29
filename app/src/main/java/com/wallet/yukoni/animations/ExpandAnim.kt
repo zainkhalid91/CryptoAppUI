@@ -1,36 +1,33 @@
-package com.wallet.yukoni.animations;
+package com.wallet.yukoni.animations
 
-import android.animation.ValueAnimator;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.animation.ValueAnimator
+import android.view.View
+import android.view.animation.DecelerateInterpolator
 
-public class ExapandAnim {
-
-    public static void expand(final View v, int duration, int targetHeight) {
-
-        int prevHeight = v.getHeight();
-
-        v.setVisibility(View.VISIBLE);
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
-        valueAnimator.addUpdateListener(animation -> {
-            v.getLayoutParams().height = (int) animation.getAnimatedValue();
-            v.requestLayout();
-        });
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.setDuration(duration);
-        valueAnimator.start();
+object ExpandAnim {
+    fun expand(v: View?, duration: Int, targetHeight: Int) {
+        val prevHeight = v?.height
+        v?.visibility = View.VISIBLE
+        val valueAnimator = prevHeight?.let { ValueAnimator.ofInt(it, targetHeight) }
+        valueAnimator?.addUpdateListener { animation: ValueAnimator? ->
+            v.layoutParams.height = animation?.animatedValue as Int
+            v.requestLayout()
+        }
+        valueAnimator?.interpolator = DecelerateInterpolator()
+        valueAnimator?.duration = duration.toLong()
+        valueAnimator?.start()
     }
 
-    public static void collapse(final View v, int duration, int targetHeight) {
-        int prevHeight = v.getHeight();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.addUpdateListener(animation -> {
-            v.getLayoutParams().height = (int) animation.getAnimatedValue();
-            v.requestLayout();
-        });
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.setDuration(duration);
-        valueAnimator.start();
+    fun collapse(v: View?, duration: Int, targetHeight: Int) {
+        val prevHeight = v?.height
+        val valueAnimator = prevHeight?.let { ValueAnimator.ofInt(it, targetHeight) }
+        valueAnimator?.interpolator = DecelerateInterpolator()
+        valueAnimator?.addUpdateListener { animation: ValueAnimator? ->
+            v.layoutParams?.height = animation?.animatedValue as Int
+            v.requestLayout()
+        }
+        valueAnimator?.interpolator = DecelerateInterpolator()
+        valueAnimator?.duration = duration.toLong()
+        valueAnimator?.start()
     }
 }

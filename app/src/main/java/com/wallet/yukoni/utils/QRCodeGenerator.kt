@@ -1,50 +1,41 @@
-package com.wallet.yukoni.utils;
+package com.wallet.yukoni.utils
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.view.Display;
-import android.view.WindowManager;
+import android.app.Activity
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Point
+import android.view.WindowManager
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-
-import static android.content.Context.WINDOW_SERVICE;
-
-public final class QRCodeGenerator {
-    public static final String TEXT = "TEXT_TYPE";
-    private final Activity activity;
-
-    public QRCodeGenerator(Activity activity) {
-        this.activity = activity;
-
-    }
-
-    public Bitmap convertPublicAddressIntoQrCode(String qrInputText) {
+class QRCodeGenerator(private val activity: Activity?) {
+    fun convertPublicAddressIntoQrCode(qrInputText: String?): Bitmap? {
 
         //Find screen size
-        WindowManager manager = (WindowManager) activity.getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3 / 4;
+        val manager = activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = manager.defaultDisplay
+        val point = Point()
+        display.getSize(point)
+        val width = point.x
+        val height = point.y
+        var smallerDimension = if (width < height) width else height
+        smallerDimension = smallerDimension * 3 / 4
 
         //Encode with a QR Code image
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrInputText,
+        val qrCodeEncoder = QRCodeEncoder(qrInputText,
                 null,
                 QRContents.Type.TEXT,
                 BarcodeFormat.QR_CODE.toString(),
-                smallerDimension);
+                smallerDimension)
         try {
-            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            return bitmap;
-
-        } catch (WriterException e) {
-            e.printStackTrace();
+            return qrCodeEncoder.encodeAsBitmap()
+        } catch (e: WriterException) {
+            e.printStackTrace()
         }
-        return null;
+        return null
+    }
+
+    companion object {
+        val TEXT: String? = "TEXT_TYPE"
     }
 }

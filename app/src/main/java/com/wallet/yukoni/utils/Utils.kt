@@ -1,9 +1,7 @@
-package com.wallet.yukoni.utils;
+package com.wallet.yukoni.utils
 
-public class Utils {
-    public static Boolean coin = false;
-    public static String fee;
-    public static Double dollarPrice;
-
-
+object Utils {
+    var coin: Boolean? = false
+    var fee: String? = null
+    var dollarPrice: Double? = null
 }

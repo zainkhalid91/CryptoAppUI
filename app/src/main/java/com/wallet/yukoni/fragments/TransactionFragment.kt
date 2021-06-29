@@ -1,50 +1,41 @@
-package com.wallet.yukoni.fragments;
+package com.wallet.yukoni.fragments
 
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.wallet.yukoni.R;
-import com.wallet.yukoni.adapters.TransactionAdapter;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.wallet.yukoni.R
+import com.wallet.yukoni.adapters.TransactionAdapter
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple [Fragment] subclass.
  */
-public class TransactionFragment extends Fragment {
-    private static TransactionFragment transactionFragment;
-    private TransactionAdapter transactionAdapter;
-    private RecyclerView transaction_recylerView;
-
-    public static TransactionFragment getInstance() {
-        if (transactionFragment == null) {
-            transactionFragment = new TransactionFragment();
-        }
-        return transactionFragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+class TransactionFragment : Fragment() {
+    private lateinit var transactionAdapter: TransactionAdapter
+    private lateinit var transaction_recylerView: RecyclerView
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_transaction, container, false);
-        transaction_recylerView = view.findViewById(R.id.transaction_recylerView);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        transaction_recylerView.setLayoutManager(mLayoutManager);
-        transaction_recylerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        transactionAdapter = new TransactionAdapter();
-        transaction_recylerView.setAdapter(transactionAdapter);
-
-
-        return view;
+        val view = inflater.inflate(R.layout.fragment_transaction, container, false)
+        transaction_recylerView = view.findViewById(R.id.transaction_recylerView)
+        val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+        transaction_recylerView.layoutManager = mLayoutManager
+        transaction_recylerView.itemAnimator = DefaultItemAnimator()
+        transactionAdapter = TransactionAdapter()
+        transaction_recylerView.adapter = transactionAdapter
+        return view
     }
 
+    companion object {
+        private var transactionFragment: TransactionFragment? = null
+        fun getInstance(): TransactionFragment? {
+            if (transactionFragment == null) {
+                transactionFragment = TransactionFragment()
+            }
+            return transactionFragment
+        }
+    }
 }

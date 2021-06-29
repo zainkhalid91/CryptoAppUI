@@ -1,53 +1,48 @@
-package com.wallet.yukoni.utils;
+package com.wallet.yukoni.utils
 
-import android.provider.ContactsContract;
+import android.provider.ContactsContract
 
 /**
  * Created by Omer on 5/11/2018.
  */
+object QRContents {
+    val URL_KEY: String? = "URL_KEY"
+    val NOTE_KEY: String? = "NOTE_KEY"
 
-public final class QRContents {
-    public static final String URL_KEY = "URL_KEY";
-    public static final String NOTE_KEY = "NOTE_KEY";
     // When using Type.CONTACT, these arrays provide the keys for adding or retrieving multiple
     // phone numbers and addresses.
-    public static final String[] PHONE_KEYS = {
+    val PHONE_KEYS: Array<String?>? = arrayOf(
             ContactsContract.Intents.Insert.PHONE, ContactsContract.Intents.Insert.SECONDARY_PHONE,
             ContactsContract.Intents.Insert.TERTIARY_PHONE
-    };
-    public static final String[] PHONE_TYPE_KEYS = {
+    )
+    val PHONE_TYPE_KEYS: Array<String?>? = arrayOf(
             ContactsContract.Intents.Insert.PHONE_TYPE,
             ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE,
             ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE
-    };
-    public static final String[] EMAIL_KEYS = {
+    )
+    val EMAIL_KEYS: Array<String?>? = arrayOf(
             ContactsContract.Intents.Insert.EMAIL, ContactsContract.Intents.Insert.SECONDARY_EMAIL,
             ContactsContract.Intents.Insert.TERTIARY_EMAIL
-    };
-    public static final String[] EMAIL_TYPE_KEYS = {
+    )
+    val EMAIL_TYPE_KEYS: Array<String?>? = arrayOf(
             ContactsContract.Intents.Insert.EMAIL_TYPE,
             ContactsContract.Intents.Insert.SECONDARY_EMAIL_TYPE,
             ContactsContract.Intents.Insert.TERTIARY_EMAIL_TYPE
-    };
+    )
 
-    private QRContents() {
-    }
-
-    public static final class Type {
-
+    object Type {
         // Plain text. Use Intent.putExtra(DATA, string). This can be used for URLs too, but string
         // must include "http://" or "https://".
-        public static final String TEXT = "TEXT_TYPE";
+        val TEXT: String? = "TEXT_TYPE"
 
         // An email type. Use Intent.putExtra(DATA, string) where string is the email address.
-        public static final String EMAIL = "EMAIL_TYPE";
+        val EMAIL: String? = "EMAIL_TYPE"
 
         // Use Intent.putExtra(DATA, string) where string is the phone number to call.
-        public static final String PHONE = "PHONE_TYPE";
+        val PHONE: String? = "PHONE_TYPE"
 
         // An SMS type. Use Intent.putExtra(DATA, string) where string is the number to SMS.
-        public static final String SMS = "SMS_TYPE";
-
+        val SMS: String? = "SMS_TYPE"
 
         //  A contact. Send a request to encode it as follows:
         //  <p/>
@@ -59,19 +54,13 @@ public final class QRContents {
         //  bundle.putString(Contacts.Intents.Insert.EMAIL, "jenny@the80s.com");
         //  bundle.putString(Contacts.Intents.Insert.POSTAL, "123 Fake St. San Francisco, CA 94102");
         //  intent.putExtra(Intents.Encode.DATA, bundle);
-
-        public static final String CONTACT = "CONTACT_TYPE";
-
+        val CONTACT: String? = "CONTACT_TYPE"
 
         // A geographic location. Use as follows:
         // Bundle bundle = new Bundle();
         // bundle.putFloat("LAT", latitude);
         // bundle.putFloat("LONG", longitude);
         // intent.putExtra(Intents.Encode.DATA, bundle);
-
-        public static final String LOCATION = "LOCATION_TYPE";
-
-        private Type() {
-        }
+        val LOCATION: String? = "LOCATION_TYPE"
     }
 }

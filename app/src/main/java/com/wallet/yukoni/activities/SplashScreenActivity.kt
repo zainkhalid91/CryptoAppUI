@@ -1,94 +1,74 @@
-package com.wallet.yukoni.activities;
+package com.wallet.yukoni.activities
 
-import android.Manifest;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.Manifest
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.view.Window
+import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.wallet.yukoni.R
+import com.wallet.yukoni.utils.SessionManager
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+class SplashScreenActivity : AppCompatActivity() {
+    //    private lateinit var yukoniTextView: AsyncTextPathView
+    private lateinit var fadeIn: Animation
+    private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var logoImageView: ImageView
+    private lateinit var sessionManager: SessionManager
+    override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash_screen)
+        sessionManager = SessionManager(applicationContext)
+        logoImageView = findViewById(R.id.logo_image_view_splash)
 
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.wallet.yukoni.R;
-import com.wallet.yukoni.utils.SessionManager;
-
-import java.util.List;
-
-import yanzhikai.textpath.AsyncTextPathView;
-
-public class SplashScreenActivity extends AppCompatActivity {
-    private static final int SPLASH_TIME_OUT = 3000;
-    AsyncTextPathView yukoni_textview;
-    Animation fade_in;
-    ConstraintLayout constraintLayout;
-    ImageView logoImageView;
-    SessionManager sessionManager;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-
-        sessionManager = new SessionManager(getApplicationContext());
-        logoImageView = findViewById(R.id.logo_image_view_splash);
-
-        //yukoni_textview = findViewById(R.id.yukoni_textview);
-        //yukoni_textview.startAnimation(0, 1);
-
-        constraintLayout = findViewById(R.id.constraintLayout);
-
-
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.xy_axis);
-        logoImageView.setAnimation(animation);
-
-        getRunTimePermissions();
-
+//        yukoniTextView = findViewById(R.id.yukoni_textview);
+//        yukoniTextView.startAnimation(0F, 1F);
+        constraintLayout = findViewById(R.id.constraintLayout)
+        val animation = AnimationUtils.loadAnimation(applicationContext,
+                R.anim.xy_axis)
+        logoImageView.animation = animation
+        getRunTimePermissions()
     }
 
-    private void getRunTimePermissions() {
+    private fun getRunTimePermissions() {
         Dexter.withContext(this)
                 .withPermissions(Manifest.permission.CAMERA,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                            new Handler().postDelayed(() -> {
-
-                                if (sessionManager.isLoggedIn()) {
-                                    Intent intent;
-                                    intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        if (report!!.areAllPermissionsGranted()) {
+                            Handler().postDelayed({
+                                if (sessionManager.isLoggedIn) {
+                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    startActivity(intent)
                                 } else {
-                                    Intent intent;
-                                    intent = new Intent(getApplicationContext(), OnBoardingActivity.class);
-                                    startActivity(intent);
+                                    val intent = Intent(applicationContext, OnBoardingActivity::class.java)
+                                    startActivity(intent)
                                 }
-                                finish();
-                            }, SPLASH_TIME_OUT);
+                                finish()
+                            }, SPLASH_TIME_OUT.toLong())
                         }
                     }
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest?>?, token: PermissionToken?) {}
+                }).check()
+    }
 
-                    }
-                }).check();
+    companion object {
+        private const val SPLASH_TIME_OUT = 3000
     }
 }

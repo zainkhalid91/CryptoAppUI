@@ -14,11 +14,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.wallet.yukoni.R
-import com.wallet.yukoni.animations.ExapandAnim
+import com.wallet.yukoni.animations.ExpandAnim
 
 class SignUpActivity : AppCompatActivity() {
-    var btn_register: Button? = null
-    var btn_back_signup: ImageView? = null
+    private var btnRegister: Button? = null
+    private var btnBackSignup: ImageView? = null
     var constraintLayoutSignUp: ConstraintLayout? = null
     var name: EditText? = null
     var email: EditText? = null
@@ -30,7 +30,7 @@ class SignUpActivity : AppCompatActivity() {
 
     // int roleId = 2;
     var animation: Animation? = null
-    var constrationLayout_fields: ConstraintLayout? = null
+    var constrationLayoutFields: ConstraintLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -49,8 +49,8 @@ class SignUpActivity : AppCompatActivity() {
         password!!.transformationMethod = PasswordTransformationMethod.getInstance()
         cpassword!!.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         cpassword!!.transformationMethod = PasswordTransformationMethod.getInstance()
-        btn_register!!.setOnClickListener { v: View? ->
-            val email_txt = email!!.text.toString().trim { it <= ' ' }
+        btnRegister!!.setOnClickListener { v: View? ->
+            val emailTxt = email!!.text.toString().trim { it <= ' ' }
             if (name!!.text.toString().isEmpty()) {
                 name!!.error = "Please fill in required field"
                 return@setOnClickListener
@@ -59,7 +59,7 @@ class SignUpActivity : AppCompatActivity() {
                 email!!.error = "Please fill in required field"
                 return@setOnClickListener
             }
-            if (!Patterns.EMAIL_ADDRESS.matcher(email_txt).matches()) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
                 email!!.error = "Enter a valid email"
                 email!!.requestFocus()
                 return@setOnClickListener
@@ -76,7 +76,7 @@ class SignUpActivity : AppCompatActivity() {
                 password!!.setError("Password must be 8 characters long", null)
             }
         }
-        btn_back_signup!!.setOnClickListener { v: View? ->
+        btnBackSignup!!.setOnClickListener { v: View? ->
             val intent = Intent(applicationContext, OnBoardingActivity::class.java)
             startActivity(intent)
             finish()
@@ -88,13 +88,13 @@ class SignUpActivity : AppCompatActivity() {
         email = findViewById(R.id.email_editText)
         password = findViewById(R.id.password_editText)
         cpassword = findViewById(R.id.confirmPassword_editText)
-        btn_register = findViewById(R.id.btn_register)
+        btnRegister = findViewById(R.id.btn_register)
         constraintLayoutSignUp = findViewById(R.id.constraintLayoutSignUp)
-        btn_back_signup = findViewById(R.id.btn_back_signup)
+        btnBackSignup = findViewById(R.id.btn_back_signup)
         header1 = findViewById(R.id.header1)
         header2 = findViewById(R.id.header_)
         header3 = findViewById(R.id.header2)
-        constrationLayout_fields = findViewById(R.id.constrationLayout_fields)
+        constrationLayoutFields = findViewById(R.id.constrationLayout_fields)
     }
 
     private fun animations() {
@@ -107,10 +107,10 @@ class SignUpActivity : AppCompatActivity() {
         animation = AnimationUtils.loadAnimation(applicationContext,
                 R.anim.enter_from_right_far_distance)
         header3!!.animation = animation
-        ExapandAnim.expand(constrationLayout_fields, 1000, 800)
+        ExpandAnim.expand(constrationLayoutFields, 1000, 800)
         animation = AnimationUtils.loadAnimation(applicationContext,
                 R.anim.enter_from_bottom)
-        btn_register!!.animation = animation
+        btnRegister!!.animation = animation
     }
 
     override fun onBackPressed() {
